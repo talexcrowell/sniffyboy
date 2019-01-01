@@ -9,7 +9,7 @@
                               |___/                |___/  
                            
                  \/----\/
-                  \0  0/    WOOF! WHOSE IN MY NETWORK?!
+                  \0  0/    WOOF! WHO'S IN MY NETWORK?!
                   _\  /_
                 _|  \/  |_
                | | |  | | |
