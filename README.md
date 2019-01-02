@@ -21,7 +21,6 @@
 A simple packet sniffer that logs network traffic for a designated amount of time.
 
 ## Features
-
-- Intercepts, dissects, and translates packets within a network making the information easier to read and understand 
+- Intercepts, dissects, and translates packets within a network 
 - Maintains a log of every interception within that scanning session in an excel file
-- Each scan adds another worksheet to the main excel workbook
+- Each scan adds another worksheet to the main excel workbook making accessing all logs simple and convenient

@@ -1,8 +1,3 @@
-# IP header
-# raw sockets
-# parse the IP header (struct)
-# regular expressions
-
 import socket
 import sys
 import struct
@@ -66,74 +61,77 @@ def getProtocol(protocolNum):
   else:
     return 'No such protocol was found'
 
-# the public network interface
-HOST = socket.gethostbyname(socket.gethostname())
+def packetSniff():
+    
+  # the public network interface
+  HOST = socket.gethostbyname(socket.gethostname())
 
-# create a raw socket and bind it to the public interface
-s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_IP)
-s.bind((HOST, 0))
+  # create a raw socket and bind it to the public interface
+  s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_IP)
+  s.bind((HOST, 80))
 
-# Include IP headers
-s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
+  # Include IP headers
+  s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
 
-# receive all packages
-s.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
+  # receive all packages
+  s.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
 
-data = receiveData(s)
-unpackedData = struct.unpack('!BBHHHBBH4s4s', data[:20])
+  data = receiveData(s)
+  unpackedData = struct.unpack('!BBHHHBBH4s4s', data[:20])
 
-version_IHL = unpackedData[0] 
-version = version_IHL >> 4
-IHL = version_IHL & 0xF
-TOS = unpackedData[1]
-totalLength = unpackedData[2]
-ID = unpackedData[3]
-flags = unpackedData[4]
-fragmentOffest = unpackedData[4] & 0x1FFF
-TTL = unpackedData[5]
-protocolNum = unpackedData[6]
-checksum = unpackedData[7]
-sourceAddress = socket.inet_ntoa(unpackedData[8])
-destinationAddress = socket.inet_ntoa(unpackedData[9])
+  version_IHL = unpackedData[0] 
+  version = version_IHL >> 4
+  IHL = version_IHL & 0xF
+  TOS = unpackedData[1]
+  totalLength = unpackedData[2]
+  ID = unpackedData[3]
+  flags = unpackedData[4]
+  fragmentOffest = unpackedData[4] & 0x1FFF
+  TTL = unpackedData[5]
+  protocolNum = unpackedData[6]
+  checksum = unpackedData[7]
+  sourceAddress = socket.inet_ntoa(unpackedData[8])
+  destinationAddress = socket.inet_ntoa(unpackedData[9])
 
-log = ([
-  ID, 
-  sourceAddress,
-  destinationAddress,
-  getProtocol(protocolNum),
-  getTOS(TOS),
-  getFlags(flags),
-  fragmentOffest,
-  TTL,
-  version,
-  checksum,
-  IHL*4,
-  totalLength,
-  str(data),
-  str(data)[20:],
-  str(datetime.datetime.now()).replace(' ', '-')[:19]
-])
+  log = ([
+    ID, 
+    sourceAddress,
+    destinationAddress,
+    getProtocol(protocolNum),
+    getTOS(TOS),
+    getFlags(flags),
+    fragmentOffest,
+    TTL,
+    version,
+    checksum,
+    IHL*4,
+    totalLength,
+    str(data),
+    str(data)[20:],
+    str(datetime.datetime.now()).replace(' ', '-')[:19]
+  ])
 
-createTrafficLog(log)
-
-# disabled promiscuous mode
-s.ioctl(socket.SIO_RCVALL, socket.RCVALL_OFF)
-
-if __name__ == "__main__":
-  print("An IP packet with the size %i was captured.\n" % totalLength)
-  print('Raw data: \n' + str(data))
-  print("\nParsed Data")
-  print("Version:\t\t" + str(version))
-  print("Header Length:\t\t" + str(IHL*4) + ' bytes')
-  print("Type of Service:\t" + getTOS(TOS))
-  print("Length:\t\t\t" + str(totalLength))
-  print('ID:\t\t\t' + str(hex(ID) + ' (' + str(ID) + ')'))
-  print('Flags:\t\t\t' + getFlags(flags))
-  print('Fragment offeset:\t' + str(fragmentOffest))
-  print('TTL\t\t\t' + str(TTL))
-  print('Protocol:\t\t' + getProtocol(protocolNum))
-  print('Checksum:\t\t' + str(checksum))
-  print('Source:\t\t\t' + sourceAddress)
-  print('Destination:\t\t' + destinationAddress)
-  print('Payload:\n' + str(data)[20:])
+  # disabled promiscuous mode
+  s.ioctl(socket.SIO_RCVALL, socket.RCVALL_OFF)
+  print('ID: '+ str(ID) + "\t" + 'SRC: ' + sourceAddress + "\t" + 'DEST: ' + destinationAddress + "\t" + 'Length: '+ str(totalLength))
+  # returns log of packet intercepted
+  return log
+  
+# if __name__ == "__main__":
+#   print("An IP packet with the size %i was captured.\n" % totalLength)
+#   print('Raw data: \n' + str(data))
+#   print("\nParsed Data")
+#   print("Version:\t\t" + str(version))
+#   print("Header Length:\t\t" + str(IHL*4) + ' bytes')
+#   print("Type of Service:\t" + getTOS(TOS))
+#   print("Length:\t\t\t" + str(totalLength))
+#   print('ID:\t\t\t' + str(hex(ID) + ' (' + str(ID) + ')'))
+#   print('Flags:\t\t\t' + getFlags(flags))
+#   print('Fragment offeset:\t' + str(fragmentOffest))
+#   print('TTL\t\t\t' + str(TTL))
+#   print('Protocol:\t\t' + getProtocol(protocolNum))
+#   print('Checksum:\t\t' + str(checksum))
+#   print('Source:\t\t\t' + sourceAddress)
+#   print('Destination:\t\t' + destinationAddress)
+#   print('Payload:\n' + str(data)[20:])
 

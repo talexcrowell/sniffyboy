@@ -1,7 +1,7 @@
 import datetime
 import xlsxwriter
 
-def createTrafficLog(log):
+def createTrafficLog(logs):
     
   dateTime = str(datetime.datetime.now()).replace(' ', '-').replace('-', '').replace(':','')[:14]
 
@@ -30,7 +30,7 @@ def createTrafficLog(log):
   row = 1
   col = 0
 
-  # Iterate over the data and write it out row by row.
+  # Iterate over the data and write it out column by column.
   for res in log:
       worksheet.write(row, col, res)
       col += 1
