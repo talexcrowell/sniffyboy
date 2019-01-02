@@ -9,7 +9,7 @@
                               |___/                |___/  
                            
                  \/----\/
-                  \0  0/    WOOF! WHO'S IN MY NETWORK?!
+                  \0  0/    WOOF! WHO AM I NETWORKING WITH?!
                   _\  /_
                 _|  \/  |_
                | | |  | | |
@@ -18,9 +18,9 @@
 ```
 
 ## Overview
-A simple packet sniffer that logs network traffic for a designated amount of time.
+A simple packet sniffer that logs outgoing network traffic for a designated amount of time.
 
 ## Features
 - Intercepts, dissects, and translates packets within a network 
 - Maintains a log of every interception within that scanning session in an excel file
-- Each scan adds another worksheet to the main excel workbook making accessing all logs simple and convenient
+- Allows user to directly access log file after creation
