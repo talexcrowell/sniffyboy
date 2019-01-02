@@ -4,7 +4,6 @@ import struct
 import re
 import datetime
 from protocols import protocols
-from logs import createTrafficLog
 
 def receiveData(socket):
   '''This function retrives data (intercepts package) from the socket'''
@@ -112,7 +111,7 @@ def packetSniff():
   ])
 
   # disabled promiscuous mode
-  s.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
+  s.ioctl(socket.SIO_RCVALL, socket.RCVALL_OFF)
   print('ID: '+ str(ID) + "\t" + 'SRC: ' + sourceAddress + "\t" + 'DEST: ' + destinationAddress + "\t" + 'Length: '+ str(totalLength))
   # returns log of packet intercepted
   return log

@@ -2,7 +2,7 @@ import sys
 import os
 import time
 import subprocess
-from testing import packetSniff
+from packet_sniffer import packetSniff
 from logs import createTrafficLog
 
 def userInterface():
@@ -57,18 +57,23 @@ def userInterface():
   # notifies user of location of log file location and allows them to access it immediately after scan
   current = str(os.getcwd())
   
-  print('You can find your log file at ' + current + '\logs.xlsx' +'\n\n')
+  print('You can find your log file at \n' + current + '\logs.xlsx' +'\n\n')
   openfile = input('Would you like to access the file now (Y/N)?: ')
   if openfile == 'Y' or openfile == 'y':
+    print('\nOpening log...')
     os.system("start " + current + '\logs.xlsx')
+    retry = input('\nWould you like to run would you like to run SniffyBoy again (Y/N)?: ')
+    if retry == 'Y' or retry == 'y':
+      userInterface()
+    elif retry == 'N' or retry == 'n':
+      print('Thank you for using SniffyBoy!')
+      sys.exit()
   elif openfile == 'N' or openfile == 'n':
     print('Thank you for using SniffyBoy!')
     sys.exit()
   else:
-    print('That is an invalid command. For your protection, we are closing the program and clearing the log')
-    os.remove('logs.xslx')
-
-
+    print('That is an invalid command. Exiting program...')
+    sys.exit()
 
 
 if __name__ == "__main__":

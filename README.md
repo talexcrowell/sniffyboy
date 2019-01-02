@@ -18,7 +18,7 @@
 ```
 
 ## Overview
-A simple packet sniffer that logs outgoing network traffic for a designated amount of time.
+A simple packet sniffer that logs network traffic for a designated amount of time.
 
 ## Features
 - Intercepts, dissects, and translates packets within a network 
