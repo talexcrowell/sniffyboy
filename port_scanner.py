@@ -2,10 +2,12 @@ import socket
 import sys
 import datetime
 
-# basic port scanner 
-def portScan(port):
-  HOST = ""
-  s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+HOST = socket.gethostbyname(socket.gethostname())
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+
+# basic specific port scan and listen
+def portScanAndListen(port):
   try:
     s.bind((HOST, port))
   except socket.error as e:
@@ -14,6 +16,21 @@ def portScan(port):
   s.listen(5)
   conn, addr = s.accept()
 
-  print('Connected to: '+addr[0]+':'+addr[1])
+  print('Connected to: '+addr[0]+':'+str(addr[1]))
 
-portScan(80)
+def portScanner(port):
+  try:
+    s.connect(("localhost", port))
+    return True
+  except:
+    return False
+
+# for x in range(1,24):
+#   if portScanner(x):
+#     print('Port {} is open'.format(x))
+
+for port in range(1, 80):
+  res = s.connect_ex(('127.0.0.1', port))
+  if res == 0:
+    print('Port {}: Open'.format(port))
+  s.close()

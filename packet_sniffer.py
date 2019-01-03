@@ -111,9 +111,10 @@ def packetSniff():
   ])
 
   # disabled promiscuous mode
-  s.ioctl(socket.SIO_RCVALL, socket.RCVALL_OFF)
-  print('ID: '+ str(ID) + "\t" + 'SRC: ' + sourceAddress + "\t" + 'DEST: ' + destinationAddress + "\t" + 'Length: '+ str(totalLength))
+  s.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
+
   # returns log of packet intercepted
+  print('ID: '+ str(ID) + "\t" + 'SRC: ' + sourceAddress + "\t" + 'DEST: ' + destinationAddress + "\t" + 'Length: '+ str(totalLength))
   return log
   
 # if __name__ == "__main__":
