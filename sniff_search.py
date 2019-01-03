@@ -5,7 +5,6 @@ import socket
 import subprocess
 from packet_sniffer import packetSniff
 from logs import createTrafficLog
-# from user_interface import userInterface
 
 def sniffPref():
   #clears CLI 
@@ -84,8 +83,7 @@ def sniffPref():
     os.system("start " + current + '\logs.xlsx')
     retry = input('\nWould you like to run would you like to run SniffyBoy again (Y/N)?: ')
     if retry == 'Y' or retry == 'y':
-      # userInterface()
-      print('grog')
+      print("grog")
     elif retry == 'N' or retry == 'n':
       print('Thank you for using SniffyBoy!')
       sys.exit()

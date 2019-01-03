@@ -1,36 +1,26 @@
 import socket
 import sys
 import datetime
+import subprocess
 
-HOST = socket.gethostbyname(socket.gethostname())
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+def generateLANDevices():
+  #runs arp in cmd to return users on network with IP and MAC
+  output = subprocess.check_output(("arp", "-a"))
+  decoded = output.decode("ASCII")
+  formatTable = decoded[86:].lstrip().rstrip().split(' ')
+  devices =[]
+  for x in range(len(formatTable)):
+    if formatTable[x].startswith('192.168'):
+      devices.append(formatTable[x])
+  print(decoded)
 
 
-# basic specific port scan and listen
-def portScanAndListen(port):
-  try:
-    s.bind((HOST, port))
-  except socket.error as e:
-    print(str(e))
+# discovering hostname from IP 
+  for device in devices:
+    try:
+      print(socket.gethostbyaddr(device) + ' is using the IP address ' + device)
+    except socket.herror:
+      print("Can't find hostname for " + device)
 
-  s.listen(5)
-  conn, addr = s.accept()
-
-  print('Connected to: '+addr[0]+':'+str(addr[1]))
-
-def portScanner(port):
-  try:
-    s.connect(("localhost", port))
-    return True
-  except:
-    return False
-
-# for x in range(1,24):
-#   if portScanner(x):
-#     print('Port {} is open'.format(x))
-
-for port in range(1, 80):
-  res = s.connect_ex(('127.0.0.1', port))
-  if res == 0:
-    print('Port {}: Open'.format(port))
-  s.close()
+if __name__ == '__main__':
+  generateLANDevices()

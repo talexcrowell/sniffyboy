@@ -1,4 +1,5 @@
 from sniff_search import sniffPref 
+from port_scanner import generateLANDevices
   
 def menu():
   print('\t\t\t|--- MENU ---|\n')
@@ -9,7 +10,7 @@ def menu():
   if menuChoice == 1:
     sniffPref()
   elif menuChoice == 2:
-    print("WIP...")
+    generateLANDevices()
   elif menuChoice == 3:
     print('WIP...')
   
