@@ -1,10 +1,10 @@
 from sniff_search import sniffPref 
-from port_scanner import generateLANDevices
+from discover_network import generateLANDevices
   
 def menu():
   print('\t\t\t|--- MENU ---|\n')
   print('[1] Packet Sniffer')
-  print('[2] Port Scanner')
+  print('[2] Discover Network Devices')
   print('[3] Information\n')
   menuChoice = int(input('Please select an option from the menu: '))
   if menuChoice == 1:
